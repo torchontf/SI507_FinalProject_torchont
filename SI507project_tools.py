@@ -62,64 +62,30 @@ def getTD_data(movie_title):
 
 def percentage(part, whole): #based on structure of matplotlib, I may not need this. I will keep just in case graphing is too complicated in the app.
     p = part/whole*100
-    p_round = round(p,3)
+    p_round = round(p,2)
     p_str = str(p_round)+"%"
     return p_str
-
-movie = getOMDb_data("titani")
-
-# with open(PROJECT_CACHE.filename, 'r', encoding='utf-8') as cache_file: #need to understand cache structure better
-#     cache_json = cache_file.read()
-#     CACHE_DICTION = json.loads(cache_json)
-
-# print(CACHE_DICTION[0])
 
 def make_graph(genre_lis, g_count_lis): #to be edited. will need to figure out how to get these values from sqlite. Will I need to iterate in the function or is it automated?
     labels = genre_lis
     sizes = g_count_lis
     plt.pie(sizes, labels=labels, autopct="%1.1f%%")
     plt.axis("equal")
-    plt.show()
+    plt.savefig("data_pie.png")
+# https://matplotlib.org/gallery/pie_and_polar_charts/pie_and_donut_labels.html#sphx-glr-gallery-pie-and-polar-charts-pie-and-donut-labels-py
 
-gl = ["comedy", "action", "horror"]
-gcl = [20, 35, 8]
+if __name__ == "__main__":
+    gl = ["comedy", "action", "horror"]
+    gcl = [20, 35, 8]
 
+    make_graph(gl, gcl)
+    movie = getOMDb_data("titanic")
+    suggestions = getTD_data("Sabrina")
+    print(percentage(5.98,10))
 
-make_graph(gl, gcl)
+# exploring cache structure
+    with open(PROJECT_CACHE.filename, 'r', encoding='utf-8') as cache_file:
+        cache_json = cache_file.read()
+        CACHE_DICTION = json.loads(cache_json)
 
-    # https://matplotlib.org/gallery/pie_and_polar_charts/pie_and_donut_labels.html#sphx-glr-gallery-pie-and-polar-charts-pie-and-donut-labels-py
-
-
-
-
-# x=[]
-# y=[]
-#
-# for i in to:
-#     if i not in x:
-#         x.append(i)
-#         y.append(to.count(i))
-#
-# print(x)
-# print(y)
-
-
-# x = list(map(to.count()))
-# print(x)
-# print(to.count("comedy"))
-# labels = "Comedy", "Action", "Horror"
-# sizes = [20,16,5]
-# # colors = ["indianred", "olivedrab", "lightsteelblue"]
-# plt.pie(sizes, labels=labels, autopct="%1.1f%%")
-#
-# plt.axis("equal")
-# plt.show()
-
-# suggestions = getTD_data("Sabrina")
-# print(percentage(5.98,10))
-
-#https://plot.ly/python/pie-charts/
-# labels = ["Comedy","Action","Horror"]
-# values = [20,16,5]
-# trace = go.Pie(labels=labels, values=values)
-# py.iplot([trace], filename="basic_pie_chart")
+    print(CACHE_DICTION.keys())

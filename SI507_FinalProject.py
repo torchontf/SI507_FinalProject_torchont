@@ -32,20 +32,51 @@ def create_tables():
 def homepage():
     movies = Movie.query.all()
     num_movies = len(movies)
-
     return render_template('home.html', num_movies=num_movies)
 
-# @app.route('/movie/add/<title>/<producer>/<genre>/')
-# def add_movie(title, producer, genre):
-#     if Movie.query.filter_by(title=title).first():
-#         return "That movie is already in the system! Go back to the main app!"
-#     else:
-#         producer = get_or_create_producer(producer)
-#         movie = Movie(title=title,producer_id=producer.id,genre=genre)
-#         session.add(movie)
-#         session.commit()
-#         return "New movie: {} by Director {} has been added.<br> Check out the URL for ALL MOVIES to see the whole list.".format(movie.title, producer.name)
-#
+@app.route('/movie/add/<title>')
+def add_movie(title):
+    if Movie.query.filter_by(title=title).first() is not None: #movies already in the database are not passing this test. Why?
+        return "That movie is already in the system! Go back to the main app!" #how to add main app link?
+    # else:
+    #     return "Thanks for submitting"
+    else:
+        m_dict = getOMDb_data(title)
+        if m_dict["Response"] == "False":
+            return "That movie doesn't exist. Check your spelling and try again."
+        else:
+            title = m_dict["Title"]
+            year = int(m_dict["Year"])
+            mpaa = m_dict["Rated"]
+            runtime = m_dict["Runtime"]
+            genre_names = m_dict["Genre"].split(", ")
+            g_lis = []
+            for g in genre_names:
+                genre = get_or_create_genre(g)
+                g_lis.append(genre)#many to many?; string of multiple genres separated by commas
+            dir_name = m_dict["Director"]
+            director = get_or_create_director(dir_name)
+            actor_names = m_dict["Actors"].split(", ")
+            a_lis = []
+            for a in actor_names:
+                actor = get_or_create_actor(a)
+                a_lis.append(actor) #many to many?; string of multiple genres
+            plot = m_dict["Plot"]#long
+            languages =  m_dict["Language"]#can be many but keep as one? no table for now; keep if have country?
+            country = m_dict["Country"] #keep? no table for now
+            poster = m_dict["Poster"]
+            imdb_rating = m_dict["imdbRating"]
+            imdb_votes = m_dict["imdbVotes"]
+
+            movie = Movie(title=title,year=year,mpaa_rating=mpaa,duration=runtime,genre=g_lis,director_id=director.id,actor=a_lis,plot=plot,language=languages,country=country,poster=poster,imdb_rating=imdb_rating,imdb_votes=imdb_votes)
+            session.add(movie)
+            session.commit()
+            return "New movie: {} by Director {} has been added.<br> Check out the URL for ALL MOVIES to see the whole list.".format(movie.title, director.name)
+
+@app.route('/movie/description')
+def movie_description():
+    return render_template("description.html","https://m.media-amazon.com/images/M/MV5BNmZjNGVmYmItZWFmNi00ODQ1LThmZTUtMzYzMGJlMjZjMGFiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg")
+
 # @app.route('/movie/all')
 # def see_all_movies():
 #     all_movies = []

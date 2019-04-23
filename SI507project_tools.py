@@ -15,7 +15,7 @@ import plotly.graph_objs as go
 # import numpy as np
 
 plotly.tools.set_credentials_file(username="tftorchon", api_key="o9UplRPPVLe1Ce5K1m4l")
-TD_KEY = "334310-SI507Fin-F9CCSCRU"
+TD_KEY = "334310-SI507Fin-8A5Y4QHO"
 OMDB_KEY = "81f97ae3"
 FNAME = "SI507project_cache.json"
 PROJECT_CACHE = Cache(FNAME)
@@ -36,6 +36,7 @@ def getOMDb_data(movie_title):
     p_dict = {}
     p_dict["apikey"] = OMDB_KEY
     p_dict["t"] = movie_title
+    p_dict["type"] = "movie"
 
     omdb_id = params_unique_combo(b_url, p_dict)
 
@@ -86,11 +87,24 @@ def make_graph_plotly(genre_lis, g_count_lis):
 
 
 
+# s = "Sam, Henry, John"
+# print(s.split(", "))
+
 if __name__ == "__main__":
     gl = ["Comedy", "Action", "Horror", "Romance", "Drama"]
     gcl = [20, 35, 8, 2, 50]
+    td_dict = getTD_data("Lethal Weapon")
+    original_movie = td_dict["Similar"]["Info"][0]["Name"]
+    suggestions =  td_dict["Similar"]["Results"]
+    s_lis = []
+    for m in suggestions:
+        s_lis.append(m["Name"])
+    print(original_movie)
+    print(s_lis)
+    #
+    # print(type(int(movie["Year"])))
 
-    getTD_data("A Serious Man")
+    # getTD_data("A Serious Man")
     #attempt mpl to plotly
     # mpl_fig = plt.pie(gcl, labels=gl, autopct="%1.1f%%")
     # cmap=plt.cm.get_cmap("spring")

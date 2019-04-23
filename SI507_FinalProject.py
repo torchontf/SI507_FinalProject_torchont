@@ -32,20 +32,19 @@ def create_tables():
 def homepage():
     movies = Movie.query.all()
     num_movies = len(movies)
-    return render_template('home.html', num_movies=num_movies)
+    return render_template("home.html", num_movies=num_movies)
 
 @app.route('/movie/add/<title>')
 def add_movie(title):
-    if Movie.query.filter_by(title=title).first() is not None: #movies already in the database are not passing this test. Why?
+    m_dict = getOMDb_data(title)
+    title = m_dict["Title"]
+    if Movie.query.filter_by(title=title).first(): #movies already in the database are not passing this test. Why?
         return "That movie is already in the system! Go back to the main app!" #how to add main app link?
-    # else:
-    #     return "Thanks for submitting"
+
     else:
-        m_dict = getOMDb_data(title)
         if m_dict["Response"] == "False":
             return "That movie doesn't exist. Check your spelling and try again."
         else:
-            title = m_dict["Title"]
             year = int(m_dict["Year"])
             mpaa = m_dict["Rated"]
             runtime = m_dict["Runtime"]
@@ -73,9 +72,34 @@ def add_movie(title):
             session.commit()
             return "New movie: {} by Director {} has been added.<br> Check out the URL for ALL MOVIES to see the whole list.".format(movie.title, director.name)
 
-@app.route('/movie/description')
-def movie_description():
-    return render_template("description.html","https://m.media-amazon.com/images/M/MV5BNmZjNGVmYmItZWFmNi00ODQ1LThmZTUtMzYzMGJlMjZjMGFiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg")
+@app.route('/movie/description/<title>')
+def movie_description(title):
+    m_dict = getOMDb_data(title)
+    title=m_dict["Title"]
+    try:
+        in_db = Movie.query.filter_by(title=title).first() #session.query(Movie).filter(Movie.title == title).first()#issue
+        print(in_db)
+        return render_template("description.html", in_db=in_db, title=title, poster_image=m_dict["Poster"], director=m_dict["Director"], genre=m_dict["Genre"], plot=m_dict["Plot"])
+    except:
+        return render_template("no_description.html")
+
+@app.route('/movie/suggestions/<title>') #Having issue. Getting rate exceeded error. Should I just give it more time? Should I offer a message for when this happens?
+def movie_suggestions(title):
+    td_dict = getTD_data(title)
+    try:
+        original_movie = td_dict["Similar"]["Info"][0]["Name"]
+        suggestions = td_dict["Similar"]["Results"]
+        s_lis = []
+        for m in suggestions:
+            s_lis.append(m["Name"])
+            return render_template("suggestions.html", original_movie=original_movie, s_lis=s_lis)
+    except:
+        if td_dict["error"]:
+            error1 = "There is an issue with the system. Please try again later."
+            return render_template("suggestions.html", error1=error1)
+        else:
+            error2 = "This movie is not in the system. Please try another movie title."
+            return render_template("suggestions.html", error2=error2)
 
 # @app.route('/movie/all')
 # def see_all_movies():

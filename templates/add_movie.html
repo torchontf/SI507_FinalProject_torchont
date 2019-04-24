@@ -1,5 +1,6 @@
 {% if error %}
 <h3>{{error}}</h3>
 {% else %}
-<h3>New movie: {{title}} by Director {{director}} has been added.<br> Check out <a href="{{ url_for('all_movies')}}">ALL MOVIES</a> to see the whole list. </h3>
+<h3>New movie: {{title}} by Director {{director}} has been added.<br></h3>
 {% endif %}
+ <h3>Check out <a href="{{ url_for('all_movies')}}">ALL MOVIES</a> to see the whole list.</h3>

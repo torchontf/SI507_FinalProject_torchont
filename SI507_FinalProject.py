@@ -31,21 +31,21 @@ def create_tables():
 @app.route('/')
 def homepage():
     movies = Movie.query.all()
+    # print(movies)
     num_movies = len(movies)
     return render_template("home.html", num_movies=num_movies)
 
-@app.route('/movie/add/<title>')
+@app.route('/movie/add/<title>') #Create template to add link to all_movies
 def add_movie(title):
     m_dict = getOMDb_data(title)
-    title = m_dict["Title"]
-    if Movie.query.filter_by(title=title).first(): #movies already in the database are not passing this test. Why?
-        return "That movie is already in the system! Go back to the main app!" #how to add main app link?
-
+    if m_dict["Response"] == "False":
+        return "That movie doesn't exist. Check your spelling and try again."
     else:
-        if m_dict["Response"] == "False":
-            return "That movie doesn't exist. Check your spelling and try again."
+        title = m_dict["Title"]
+        if Movie.query.filter_by(title=title).first():
+            return "That movie is already in the system! Go back to the main app!" #how to add main app link?
         else:
-            year = int(m_dict["Year"])
+            year = int(m_dict["Year"]) #leave as integer? Would this ever not be a number value?
             mpaa = m_dict["Rated"]
             runtime = m_dict["Runtime"]
             genre_names = m_dict["Genre"].split(", ")
@@ -54,7 +54,7 @@ def add_movie(title):
                 genre = get_or_create_genre(g)
                 g_lis.append(genre)#many to many?; string of multiple genres separated by commas
             dir_name = m_dict["Director"]
-            director = get_or_create_director(dir_name)
+            director = get_or_create_director(dir_name) #is a many to many relationship in the API, but portrayed as a one to many here
             actor_names = m_dict["Actors"].split(", ")
             a_lis = []
             for a in actor_names:
@@ -75,16 +75,16 @@ def add_movie(title):
 @app.route('/movie/description/<title>')
 def movie_description(title):
     m_dict = getOMDb_data(title)
-    title=m_dict["Title"]
     try:
+        title=m_dict["Title"]
         in_db = Movie.query.filter_by(title=title).first() #session.query(Movie).filter(Movie.title == title).first()#issue
-        print(in_db)
+        # print(in_db)
         return render_template("description.html", in_db=in_db, title=title, poster_image=m_dict["Poster"], director=m_dict["Director"], genre=m_dict["Genre"], plot=m_dict["Plot"])
     except:
-        return render_template("no_description.html")
+        return render_template("description.html")
 
 @app.route('/movie/suggestions/<title>') #Having issue. Getting rate exceeded error. Should I just give it more time? Should I offer a message for when this happens?
-def movie_suggestions(title):
+def movie_suggestions(title): #Having issues. Not getting info. Should I try again later or rethink this project?
     td_dict = getTD_data(title)
     try:
         original_movie = td_dict["Similar"]["Info"][0]["Name"]
@@ -92,23 +92,38 @@ def movie_suggestions(title):
         s_lis = []
         for m in suggestions:
             s_lis.append(m["Name"])
-            return render_template("suggestions.html", original_movie=original_movie, s_lis=s_lis)
+        return render_template("suggestions.html", original_movie=original_movie, s_lis=s_lis)
     except:
         if td_dict["error"]:
-            error1 = "There is an issue with the system. Please try again later."
-            return render_template("suggestions.html", error1=error1)
+            error = "There is an issue with the system. Please try again later."
         else:
-            error2 = "This movie is not in the system. Please try another movie title."
-            return render_template("suggestions.html", error2=error2)
+            error = "This movie is not in the system. Please try another movie title."
+        return render_template("suggestions.html", error=error)
 
-# @app.route('/movie/all')
-# def see_all_movies():
-#     all_movies = []
-#     movies = Movie.query.order_by(Movie.title).all()
-#     for m in movies:
-#         producer = Producer.query.filter_by(id=m.producer_id).first()
-#         all_movies.append((m.title,producer.name,m.genre))
-#     return render_template('all_movies.html',all_movies=all_movies)
+@app.route('/movie/graph')
+def movie_graph():
+    genres_dict = {}
+    g_set_lis = session.query(genre_set).all()
+    for g_tup in g_set_lis:
+        g_id = g_tup[0]
+        genre = Genre.query.filter_by(id=g_id).first().name
+        if genre not in genres_dict:
+            num = session.query(genre_set).join(Genre).join(Movie).filter(Genre.id == g_id).count()
+            genres_dict[genre] = num
+
+    url = make_graph_plotly(genres_dict)
+    print(url)
+    return render_template("graph.html", url=url)
+
+
+@app.route('/movie/all')
+def see_all_movies():
+    all_movies = []
+    movies = Movie.query.order_by(Movie.title).all()
+    for m in movies:
+        director = Director.query.filter_by(id=m.director_id).first()
+        all_movies.append((m.title,director.name,m.genre))
+    return render_template('all_movies.html',all_movies=all_movies)
 
 # @app.route('/producer/all')
 # def see_all_producers():

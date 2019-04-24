@@ -80,9 +80,12 @@ def percentage(part, whole): #based on structure of matplotlib, I may not need t
 #     plt.axis("equal")
 #     plt.savefig("data_pie.png")
 
-def make_graph_plotly(genre_lis, g_count_lis):
+def make_graph_plotly(genre_dict):
+    genre_lis, g_count_lis = zip(*genre_dict.items())
+
     fig = {"data": [{"values": g_count_lis, "labels": genre_lis, "marker":{"line":{"color":"#000000", "width":2}}, "name": "Movies", "hoverinfo": "label+percent+name", "hole": .4, "type": "pie"}],"layout": {"title":"The Genres of Your Favorite Movies"}}
-    py.plot(fig, filename='donut')
+    graph_url = py.plot(fig, filename='movies_donut', auto_open=False) #plotly.offline.plot(fig, filename='movies_donut.html', auto_open=False)
+    return graph_url
 # https://matplotlib.org/gallery/pie_and_polar_charts/pie_and_donut_labels.html#sphx-glr-gallery-pie-and-polar-charts-pie-and-donut-labels-py
 
 
@@ -90,17 +93,26 @@ def make_graph_plotly(genre_lis, g_count_lis):
 # s = "Sam, Henry, John"
 # print(s.split(", "))
 
-if __name__ == "__main__":
-    gl = ["Comedy", "Action", "Horror", "Romance", "Drama"]
-    gcl = [20, 35, 8, 2, 50]
-    td_dict = getTD_data("Lethal Weapon")
-    original_movie = td_dict["Similar"]["Info"][0]["Name"]
-    suggestions =  td_dict["Similar"]["Results"]
-    s_lis = []
-    for m in suggestions:
-        s_lis.append(m["Name"])
-    print(original_movie)
-    print(s_lis)
+# if __name__ == "__main__":
+    # g_d = {"Comedy":50, "Action":17, "Horror":8, "Romance":35, "Drama":20}
+    # keys, values = zip(*g_d.items())
+    # print(keys)
+    # print(type(keys))
+    # print(values)
+    # print(type(values))
+    # print(g_d.keys())
+    # print(g_d.values())
+    # print(type(g_d.values()))
+    # gcl = [20, 35, 8, 2, 50]
+    # print(make_graph_plotly(g_d))
+    # td_dict = getTD_data("Lethal Weapon")
+    # original_movie = td_dict["Similar"]["Info"][0]["Name"]
+    # suggestions =  td_dict["Similar"]["Results"]
+    # s_lis = []
+    # for m in suggestions:
+    #     s_lis.append(m["Name"])
+    # print(original_movie)
+    # print(s_lis)
     #
     # print(type(int(movie["Year"])))
 

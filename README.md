@@ -15,7 +15,7 @@ description of a movie, get suggestions for similar films, or see a donut chart 
 ## How to use
 1.  After running the program, open a browser and enter <http://localhost:5000/> followed by the desired path, as defined below.
 2.  <http://localhost:5000/> is described below under the `/(homepage)` route.
-3.  <http://localhost:5000/movie/add/&lt;title\>> is described below under the `**/movie/add/&lt;title>/&lt;producer>/&lt;genre>` route. This movie requires adding a movie title in place of &lt;title\>. Examples of movie titles include, "Brick", "Captain Marvel", "When Harry Met Sally", "My Fair Lady", "A Serious Man", "The Conjuring 2", "Taxi Driver", and "Pulp Fiction". <http://localhost:5000/movie/add/black orpheus> will return ![Black Orpheus Description Route](description.jpg) 
+3.  <http://localhost:5000/movie/add/&lt;title\>> is described below under the `**/movie/add/&lt;title>/&lt;producer>/&lt;genre>` route. This movie requires adding a movie title in place of &lt;title\>. Examples of movie titles include, "Brick", "Captain Marvel", "When Harry Met Sally", "My Fair Lady", "A Serious Man", "The Conjuring 2", "Taxi Driver", and "Pulp Fiction". <http://localhost:5000/movie/add/black orpheus> will return ![Black Orpheus Description Route](https://github.com/torchontf/SI507_FinalProject_torchont/blob/master/Description.JPG) 
 4.  <http://localhost:5000/movie/all> is described below under the `/movie/all` route.
 5.  <http://localhost:5000/movie/delete/&lt;title\>> is described below under the `/movie/delete/&lt;title>` route.
 6.  <http://localhost:5000/movie/description/&lt;title\>> is described below under the `/movie/description/&lt;title>` route.

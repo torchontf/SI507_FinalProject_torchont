@@ -19,7 +19,7 @@ class Movie(db.Model):
     genre = db.relationship("Genre",secondary=genre_set,backref=db.backref("movies",lazy="dynamic"),lazy="dynamic") #many to many?
     director_id = db.Column(db.Integer, db.ForeignKey("directors.id"))
     actor = db.relationship("Actor",secondary=actor_set,backref=db.backref("movies",lazy="dynamic"),lazy="dynamic")#many to many?
-    plot = db.Column(db.String(250)) #long
+    plot = db.Column(db.String(1000)) #long
     language = db.Column(db.String(64)) #can be many but keep as one? no table for now
     country = db.Column(db.String(64)) #keep? no table for now
     poster = db.Column(db.String(250))

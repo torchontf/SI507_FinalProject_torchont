@@ -37,6 +37,7 @@ def getOMDb_data(movie_title):
     p_dict["apikey"] = OMDB_KEY
     p_dict["t"] = movie_title
     p_dict["type"] = "movie"
+    p_dict["plot"] = "full"
 
     omdb_id = params_unique_combo(b_url, p_dict)
 

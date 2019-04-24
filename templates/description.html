@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Movie Description</title>
+</head>
+<body>
+{% if title %}
+    <h1>{{title}}</h1><br>
+    {% if poster_image != "N/A" %}:
+    <img src = "{{ poster_image }}" alt="Movie Poster"><br>
+    {% else %}
+    <h3> There is no poster to display</h3>
+    {% endif %}
+    <h3>Director: {{director}}</h3>
+    <h3>Genre(s): {{genre}}</h3>
+    <h3>Plot: {{plot}}</h3><br>
+    {% if in_db %}{{title}} is one of your favorite movies.
+    {% else %}<b>***{{title}} isn't in the app. To include this movie among your favorites, use the "add movie" URL.</b>{% endif %}
+{% else %}
+    <h3>Sorry, the movie you entered was not recognized. Please try again.</h3>
+{% endif %}
+</body>
+</html>

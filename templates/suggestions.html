@@ -1,0 +1,16 @@
+{% if original_movie %}
+
+<h3>If you like {{original_movie}}, you might also like:</h3><br>
+
+<ul>
+{% for title in s_lis %}
+<li>{{title}}</li><br>
+{% endfor %}
+</ul>
+<h3>For a description of any of these movies, go to the "movie description" URL.</h3>
+{% endif %}
+
+{% if error %}
+<h3> {{error}}</h3>
+<a href="{{ url_for('homepage')}}"> Return to home page</a>
+{% endif %}

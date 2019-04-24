@@ -1,0 +1,16 @@
+
+{% if not all_movies %}
+<h2>There are no saved movies to show.</h2>
+
+{% else %}
+<h2>Your favorite movies:</h2>
+
+<ul>
+{% for m in all_movies %}
+<li>{{ m[0] }} | {{ m[1] }} by Director {{ m[2] }}{% endfor %}</li><br>
+</ul>
+{% endif %}
+
+
+
+<a href="{{ url_for('homepage')}}">Return to home page</a>

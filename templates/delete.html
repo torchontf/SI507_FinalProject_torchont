@@ -1,0 +1,5 @@
+{% if title %}
+<h3> {{title}} has been deleted from the app.</h3>
+{% else %}
+<h3>This movie is not in the app. Check out <a href="{{ url_for('all_movies')}}">ALL MOVIES</a> to see the list.</h3>
+{% endif %}

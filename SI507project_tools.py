@@ -55,7 +55,6 @@ def getTD_data(movie_title):
     p_dict["apikey"] = TD_KEY
     p_dict["q"] = movie_title
     p_dict["type"] = "movies"
-    # p_dict["info"] = 1 # not sure whether to include extra info: teaser, wiki article, youtube video
 
     td_id = params_unique_combo(b_url, p_dict)
 
@@ -87,7 +86,7 @@ def make_graph_plotly(genre_dict):
     fig = {"data": [{"values": g_count_lis, "labels": genre_lis, "marker":{"line":{"color":"#000000", "width":2}}, "name": "Movies", "hoverinfo": "label+percent+name", "hole": .4, "type": "pie"}],"layout": {"title":"The Genres of Your Favorite Movies"}}
     graph_url = py.plot(fig, filename='movies_donut', auto_open=False) #plotly.offline.plot(fig, filename='movies_donut.html', auto_open=False)
     return graph_url
-# https://matplotlib.org/gallery/pie_and_polar_charts/pie_and_donut_labels.html#sphx-glr-gallery-pie-and-polar-charts-pie-and-donut-labels-py
+# https://matplotlib.org/gallery/pie_and_polar_charts/pie_and_donut_labels.html#sphx-glr-gallery-pie-and-polar-charts-pie-and-donut-labels-py, https://stackoverflow.com/questions/29523313/how-to-prevent-plotly-from-plotting-automatically
 
 
 

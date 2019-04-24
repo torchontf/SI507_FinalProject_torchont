@@ -14,7 +14,7 @@ app = Flask(__name__)
 app.debug = True
 app.use_reloader = True
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./finalproject_movies.db' # TODO: decide what your new database name will be -- that has to go here
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./finalproject_movies.db'
 app.config['SECRET_KEY'] = 'e98trdzxtyuikm4e6h'
 
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
@@ -35,7 +35,7 @@ def homepage():
     return render_template("home.html", num_movies=len(movies))
 
 
-@app.route("/movie/add/<title>") #Create template to add link to all_movies
+@app.route("/movie/add/<title>")
 def add_movie(title):
     m_dict = getOMDb_data(title)
     if m_dict["Response"] == "False":
@@ -45,7 +45,7 @@ def add_movie(title):
         title = m_dict["Title"]
         if Movie.query.filter_by(title=title).first():
             error = "That movie is already in the system. Try another title."
-            return  render_template("add_movie.html", error=error)#how to add main app link?
+            return  render_template("add_movie.html", error=error)
         else:
             genre_names = m_dict["Genre"].split(", ")
             g_lis = []
@@ -58,28 +58,26 @@ def add_movie(title):
             a_lis = []
             for a in actor_names:
                 actor = get_or_create_actor(a)
-                a_lis.append(actor) #many to many?; string of multiple genres
+                a_lis.append(actor)
 
             movie = Movie(title=title,year=int(m_dict["Year"]),mpaa_rating=m_dict["Rated"],duration=m_dict["Runtime"],genre=g_lis,director_id=director.id,actor=a_lis,plot=m_dict["Plot"],language=m_dict["Language"],country=m_dict["Country"],poster=m_dict["Poster"],imdb_rating=m_dict["imdbRating"],imdb_votes=m_dict["imdbVotes"])
             session.add(movie)
             session.commit()
             return render_template("add_movie.html", title=title, director=director.name)
 
-
 @app.route("/movie/description/<title>")
 def movie_description(title):
     m_dict = getOMDb_data(title)
     try:
         title=m_dict["Title"]
-        in_db = Movie.query.filter_by(title=title).first() #session.query(Movie).filter(Movie.title == title).first()#issue
-        # print(in_db)
+        in_db = Movie.query.filter_by(title=title).first()
         return render_template("description.html", in_db=in_db, title=title, poster_image=m_dict["Poster"], director=m_dict["Director"], genre=m_dict["Genre"], plot=m_dict["Plot"])
     except:
         return render_template("description.html")
 
 
-@app.route("/movie/suggestions/<title>") #Having issue. Getting rate exceeded error. Should I just give it more time? Should I offer a message for when this happens?
-def movie_suggestions(title): #Having issues. Not getting info. Should I try again later or rethink this project?
+@app.route("/movie/suggestions/<title>")
+def movie_suggestions(title):
     td_dict = getTD_data(title)
 
     try:
@@ -108,7 +106,7 @@ def movie_graph():
             g_id = g_tup[0]
             genre = Genre.query.filter_by(id=g_id).first().name
             if genre not in genres_dict:
-                num = session.query(genre_set).join(Genre).join(Movie).filter(Genre.id == g_id).count()
+                num = session.query(genre_set).join(Genre).join(Movie).filter(Genre.id == g_id).count() #https://stackoverflow.com/questions/21335607/querying-association-table-object-directly
                 genres_dict[genre] = num
 
         url = make_graph_plotly(genres_dict)
@@ -133,9 +131,12 @@ def delete_movie(title):
     title = m_dict["Title"]
     if Movie.query.filter_by(title=title).first():
         m = Movie.query.filter_by(title=title).first()
+        g_query = genre_set.delete().where(genre_set.c.movie_id==m.id)
+        a_query = actor_set.delete().where(actor_set.c.movie_id==m.id) #https://stackoverflow.com/questions/32075749/sqlalchemy-using-delete-update-with-a-join-query
         Movie.query.filter_by(title=title).delete()
-        genre_set.delete().where(genre_set.c.movie_id==m.id)
-        actor_set.delete().where(actor_set.c.movie_id==m.id)
+
+        session.execute(g_query)
+        session.execute(a_query)
         session.commit()
         return render_template("delete.html",title=title)
     else:

@@ -5,22 +5,17 @@ Tasha Torchon
 [Link to this repository](https://github.com/torchontf/SI507_FinalProject_torchont)
 ---
 ## Project Description
-My project will build on Project 3 by saving and displaying information about
-movies to a database based on user input. The user will be able to save their
-favorite movies to the database using it’s title (and perhaps one other parameter).
-The remaining information about the film will be collected and saved in the
-database using the OMDb API. Based on the route chosen, the user can also see a
-description regarding certain movies, get suggestions for similar films, or see
-simple data regarding their favorite films (e.g. percentages of the different
-genres included in the database).
+My project builds on Project 3 by saving movies to a database and displaying information about movies based on user input. The user is able to save their favorite movies to the database using it’s title. The remaining information about the film is collected and saved in the database using the OMDb API. Based on the route chosen, the user can also see a
+description of a movie, get suggestions for similar films, or see a donut chart based on the genres of their favorite movies, among other things.
 ## How to run
 1.  First, you should install all requirements with `pip install
 -r requirements.txt`
-2.  Second, you should run `SI507_FinalProject.py runserver`
+2.  Second, you should run `movies_app.py runserver`
+3.  Third, to access the different routes, you should type in the URLs as described in the ## How to use ## section.
 ## How to use
 1.  After running the program, open a browser and enter <http://localhost:5000/> followed by the desired path, as defined below.
 2.  <http://localhost:5000/> is described below under the `/(homepage)` route.
-3.  <http://localhost:5000/movie/add/&lt;title\>> is described below under the `**/movie/add/&lt;title>/&lt;producer>/&lt;genre>` route.
+3.  <http://localhost:5000/movie/add/&lt;title\>> is described below under the `**/movie/add/&lt;title>/&lt;producer>/&lt;genre>` route. This movie requires adding a movie title in place of &lt;title\>. Examples of movie titles include, "Brick", "Captain Marvel", "When Harry Met Sally", "My Fair Lady", "A Serious Man", "The Conjuring 2", "Taxi Driver", and "Pulp Fiction". <http://localhost:5000/movie/add/black orpheus> will return ![Black Orpheus Description Route](description.jpg) 
 4.  <http://localhost:5000/movie/all> is described below under the `/movie/all` route.
 5.  <http://localhost:5000/movie/delete/&lt;title\>> is described below under the `/movie/delete/&lt;title>` route.
 6.  <http://localhost:5000/movie/description/&lt;title\>> is described below under the `/movie/description/&lt;title>` route.

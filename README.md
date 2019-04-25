@@ -27,8 +27,8 @@ description of a movie, get suggestions for similar films, or see a donut chart 
 7.  <http://localhost:5000/movie/all> is described below under the `/movie/all` route.
 ![All Movies](https://github.com/torchontf/SI507_FinalProject_torchont/blob/master/Photos/AllMovies.PNG
 )
-8.  <http://localhost:5000/movie/delete/&lt;title>> is described below under the `/movie/delete/&lt;title>` route. A reasonable URL to access this route is <http://localhost:5000/movie/delete/adaptation>
-![Adaptation Deleted](https://github.com/torchontf/SI507_FinalProject_torchont/blob/master/Photos/Delete.PNG)
+8.  <http://localhost:5000/movie/delete/&lt;title>> is described below under the `/movie/delete/&lt;title>` route. A reasonable URL to access this route is <http://localhost:5000/movie/delete/the%20meaning%20of%20life>
+![The Meaning of Life Deleted](https://github.com/torchontf/SI507_FinalProject_torchont/blob/master/Photos/Delete.PNG)
 
 ## Routes in this application
 -  `/home` -> this is the home page. It tells the user the number of movies in the app.

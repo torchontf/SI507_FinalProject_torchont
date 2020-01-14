@@ -5,7 +5,7 @@ Tasha Torchon
 [Link to this repository](https://github.com/torchontf/SI507_FinalProject_torchont)
 ---
 ## Project Description
-My project builds on Project 3 by saving movies to a database and displaying information about movies based on user input. The user is able to save their favorite movies to the database using it’s title. The remaining information about the film is collected and saved in the database using the OMDb API. Based on the route chosen, the user can also see a
+My project builds on Project 3 by saving movies to a database and displaying information about movies based on user input. The user is able to save their favorite movies to the database using its title. The remaining information about the film is collected and saved in the database using the OMDb API. Based on the route chosen, the user can also see a
 description of a movie, get suggestions for similar films, or see a donut chart based on the genres of their favorite movies, among other things.
 
 ## How to run

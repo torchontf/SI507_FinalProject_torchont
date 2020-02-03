@@ -3,6 +3,7 @@
 # Application
 
 # Import statements
+from config import APP_KEY
 import os
 from flask import Flask, render_template, session, redirect, url_for
 from movies_db import db
@@ -15,7 +16,7 @@ app.debug = True
 app.use_reloader = True
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./finalproject_movies.db'
-app.config['SECRET_KEY'] = 'e98trdzxtyuikm4e6h'
+app.config['SECRET_KEY'] = APP_KEY
 
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

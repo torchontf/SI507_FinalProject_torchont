@@ -4,6 +4,7 @@
 
 
 ##### IMPORT STATEMENTS #####
+from config import PLOTLY_USERNAME, PLOTLY_KEY, TD_KEY, OMDB_KEY
 import codecs
 import sys
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer)
@@ -15,9 +16,7 @@ import plotly.graph_objs as go
 
 
 ###### GLOBAL VARIABLES AND API ACCESS #####
-plotly.tools.set_credentials_file(username="tftorchon", api_key="o9UplRPPVLe1Ce5K1m4l")
-TD_KEY = "334310-SI507Fin-8A5Y4QHO"
-OMDB_KEY = "81f97ae3"
+plotly.tools.set_credentials_file(username=PLOTLY_USERNAME, api_key=PLOTLY_KEY)
 FNAME = "SI507project_cache.json"
 PROJECT_CACHE = Cache(FNAME)
 CACHE_DICTION = PROJECT_CACHE.cache_diction

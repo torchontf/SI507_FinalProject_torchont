@@ -21,7 +21,7 @@ class Movie(db.Model):
     genre = db.relationship("Genre",secondary=genre_set,backref=db.backref("movies",lazy="dynamic"),lazy="dynamic") #many to many?
     director_id = db.Column(db.Integer, db.ForeignKey("directors.id"))
     actor = db.relationship("Actor",secondary=actor_set,backref=db.backref("movies",lazy="dynamic"),lazy="dynamic")#many to many?
-    plot = db.Column(db.String(1000)) 
+    plot = db.Column(db.String(1000))
     language = db.Column(db.String(64))
     country = db.Column(db.String(64))
     poster = db.Column(db.String(250))
@@ -58,8 +58,8 @@ class Actor(db.Model):
     birthdate = db.Column(db.String(64)) #date object?
     birthplace = db.Column(db.String(64))
 
-def __repr__(self):
-    return "{} (ID: {})".format(self.name,self.id)
+    def __repr__(self):
+        return "{} (ID: {})".format(self.name,self.id)
 
 
 ##### HELPER FUNCTIONS #####
